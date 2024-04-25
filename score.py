@@ -29,8 +29,8 @@ def score(gold, pred, col):
     """
     Calculate metrics for: AUC-ROC, AUCPR
     """
-    roc = roc_auc_score(gold[col], pred[col])
-    pr = average_precision_score(gold[col], pred[col])
+    roc = roc_auc_score(gold['disease'], pred[col])  # TODO: update colname in goldstandard
+    pr = average_precision_score(gold['disease'], pred[col])   # TODO: same as above
 
     return {'auc_roc': roc, 'auprc': pr}
 
