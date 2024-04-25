@@ -66,7 +66,7 @@ def check_unknown_ids(gold, pred):
 
 def check_nan_values(pred):
     """Check for NAN predictions."""
-    missing_probs = pred.probability.isna().sum()
+    missing_probs = pred['disease_probability'].isna().sum()
     if missing_probs:
         return (
             f"'disease_probability' column contains {missing_probs} NaN value(s)."
@@ -76,17 +76,17 @@ def check_nan_values(pred):
 
 def check_prob_values(pred):
     """Check that probabilities are between [0, 1]."""
-    if (pred.probability < 0).any() or (pred.probability > 1).any():
+    if (pred['disease_probability'] < 0).any() or (pred['disease_probability'] > 1).any():
         return "'disease_probability' values should be between [0, 1] inclusive."
     return ""
 
 
-def validate(gold_file, pred_file, task_number):
+def validate(gold_file, pred_file):
     """Validate predictions file against goldstandard."""
     errors = []
 
     gold = pd.read_csv(gold_file,
-                       index_col="participant")
+                       index_col="id")
     try:
         pred = pd.read_csv(pred_file,
                            usecols=EXPECTED_COLS,
@@ -112,8 +112,7 @@ def main():
 
     invalid_reasons = validate(
         gold_file=args.goldstandard_file,
-        pred_file=args.predictions_file,
-        task_number=args.task
+        pred_file=args.predictions_file
     )
 
     invalid_reasons = "\n".join(filter(None, invalid_reasons))
