@@ -45,7 +45,7 @@ def main():
 
     with open(args.output, "w") as out:
         res = {
-            "submission_status": "SCORED",
+            "validation_status": "SCORED",
             **scores
         }
         out.write(json.dumps(res))
