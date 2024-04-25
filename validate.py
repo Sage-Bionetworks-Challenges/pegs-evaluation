@@ -35,7 +35,7 @@ def check_dups(pred):
     if duplicates.any():
         return (
             f"Found {duplicates.sum()} duplicate participant ID(s): "
-            f"{pred[duplicates].participant.to_list()}"  # TODO: check if we can return IDs
+            f"{pred[duplicates].id.to_list()}"  # TODO: check if we can return IDs
         )
     return ""
 
