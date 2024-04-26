@@ -12,7 +12,9 @@ Metrics returned and used for ranking are:
 ### Validate
 
 ```text
-python validate.py -p PATH/TO/PREDICTIONS_FILE.CSV -g PATH/TO/GOLDSTANDARD_FILE.CSV [-o RESULTS_FILE]
+python validate.py \
+  -p PATH/TO/PREDICTIONS_FILE.CSV \
+  -g PATH/TO/GOLDSTANDARD_FILE.CSV [-o RESULTS_FILE]
 ```
 If `-o/--output` is not provided, then results will print to STDOUT, e.g.
 
@@ -31,7 +33,9 @@ What it will check for:
 ### Score
 
 ```text
-python score.py -p PATH/TO/PREDICTIONS_FILE.CSV -g PATH/TO/GOLDSTANDARD_FILE.CSV [-o RESULTS_FILE]
+python score.py \
+  -p PATH/TO/PREDICTIONS_FILE.CSV \
+  -g PATH/TO/GOLDSTANDARD_FILE.CSV [-o RESULTS_FILE]
 ```
 
 If `-o/--output` is not provided, then results will output to `results.json`.
