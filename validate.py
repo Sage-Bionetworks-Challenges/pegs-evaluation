@@ -25,7 +25,8 @@ def get_args():
                         type=str, required=True)
     parser.add_argument("-g", "--goldstandard_file",
                         type=str, required=True)
-    parser.add_argument("-o", "--output", type=str)
+    parser.add_argument("-o", "--output",
+                        type=str, default="results.json")
     return parser.parse_args()
 
 
@@ -127,11 +128,9 @@ def main():
         "validation_errors": invalid_reasons
     })
 
-    if args.output:
-        with open(args.output, "w") as out:
-            out.write(res)
-    else:
-        print(res.get("validation_status"))
+    with open(args.output, "w") as out:
+        out.write(res)
+    print(res.get("validation_status"))
 
 
 if __name__ == "__main__":
