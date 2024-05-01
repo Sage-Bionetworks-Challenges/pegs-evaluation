@@ -54,6 +54,8 @@ def main():
     with open(args.output, "w") as out:
         out.write(json.dumps(res))
 
+    print(res["validation_status"])
+
 
 if __name__ == "__main__":
     main()
