@@ -28,7 +28,6 @@ def score(gold, gold_col, pred, pred_col):
     """
     roc = roc_auc_score(gold[gold_col], pred[pred_col])
     pr = average_precision_score(gold[gold_col], pred[pred_col])
-
     return {"auc_roc": roc, "auprc": pr}
 
 
