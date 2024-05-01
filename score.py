@@ -21,16 +21,17 @@ def get_args():
                         type=str, required=True)
     parser.add_argument("-g", "--goldstandard_file",
                         type=str, required=True)
-    parser.add_argument("-o", "--output", type=str, default="results.json")
+    parser.add_argument("-o", "--output",
+                        type=str, default="results.json")
     return parser.parse_args()
 
 
-def score(gold, pred, col):
+def score(gold, gold_col, pred, pred_col):
     """
     Calculate metrics for: AUC-ROC, AUCPR
     """
-    roc = roc_auc_score(gold['disease'], pred[col])  # TODO: update colname in goldstandard
-    pr = average_precision_score(gold['disease'], pred[col])   # TODO: same as above
+    roc = roc_auc_score(gold[gold_col], pred[pred_col])
+    pr = average_precision_score(gold[gold_col], pred[pred_col])
 
     return {'auc_roc': roc, 'auprc': pr}
 
@@ -41,13 +42,16 @@ def main():
 
     pred = pd.read_csv(args.predictions_file)
     gold = pd.read_csv(args.goldstandard_file)
-    scores = score(gold, pred, "disease_probability")
+    scores = score(gold, "disease", pred, "disease_probability")
 
+    with open(args.output) as out:
+        res = json.load(out)
+
+    res |= {
+        "validation_status": "SCORED",
+        **scores
+    }
     with open(args.output, "w") as out:
-        res = {
-            "validation_status": "SCORED",
-            **scores
-        }
         out.write(json.dumps(res))
 
 
