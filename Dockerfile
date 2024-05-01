@@ -7,6 +7,3 @@ RUN pip install -r requirements.txt
 
 COPY validate.py .
 COPY score.py .
-
-ENTRYPOINT [ "python" ]
-CMD [ "score.py" ]
