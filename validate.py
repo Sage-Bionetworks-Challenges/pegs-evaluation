@@ -31,30 +31,30 @@ def get_args():
 
 def check_dups(pred):
     """Check for duplicate participant IDs."""
-    duplicates = pred.duplicated(subset=['id'])
+    duplicates = pred.duplicated(subset=["id"])
     if duplicates.any():
         return (
             f"Found {duplicates.sum()} duplicate participant ID(s): "
-            f"{pred[duplicates].id.to_list()}"  # TODO: check if we can return IDs
+            f"{pred[duplicates].id.to_list()}"
         )
     return ""
 
 
 def check_missing_ids(gold, pred):
     """Check for missing participant IDs."""
-    pred = pred.set_index('id')
+    pred = pred.set_index("id")
     missing_ids = gold.index.difference(pred.index)
     if missing_ids.any():
         return (
             f"Found {missing_ids.shape[0]} missing participant ID(s): "
-            f"{missing_ids.to_list()}"  # TODO: check if we can return IDs
+            f"{missing_ids.to_list()}"
         )
     return ""
 
 
 def check_unknown_ids(gold, pred):
     """Check for unknown participant IDs."""
-    pred = pred.set_index('id')
+    pred = pred.set_index("id")
     unknown_ids = pred.index.difference(gold.index)
     if unknown_ids.any():
         return (
@@ -66,7 +66,7 @@ def check_unknown_ids(gold, pred):
 
 def check_nan_values(pred):
     """Check for NAN predictions."""
-    missing_probs = pred['disease_probability'].isna().sum()
+    missing_probs = pred["disease_probability"].isna().sum()
     if missing_probs:
         return (
             f"'disease_probability' column contains {missing_probs} NaN value(s)."
@@ -76,7 +76,7 @@ def check_nan_values(pred):
 
 def check_prob_values(pred):
     """Check that probabilities are between [0, 1]."""
-    if (pred['disease_probability'] < 0).any() or (pred['disease_probability'] > 1).any():
+    if (pred["disease_probability"] < 0).any() or (pred["disease_probability"] > 1).any():
         return "'disease_probability' values should be between [0, 1] inclusive."
     return ""
 
@@ -85,13 +85,14 @@ def validate(gold_file, pred_file):
     """Validate predictions file against goldstandard."""
     errors = []
 
-    gold = pd.read_csv(gold_file,
-                       index_col="id")
+    gold = pd.read_csv(gold_file, index_col="id")
     try:
-        pred = pd.read_csv(pred_file,
-                           usecols=EXPECTED_COLS,
-                           dtype=EXPECTED_COLS,
-                           float_precision='round_trip')
+        pred = pd.read_csv(
+            pred_file,
+            usecols=EXPECTED_COLS,
+            dtype=EXPECTED_COLS,
+            float_precision="round_trip",
+        )
     except ValueError as err:
         errors.append(
             f"Invalid column names and/or types: {str(err)}. "
@@ -130,7 +131,7 @@ def main():
         with open(args.output, "w") as out:
             out.write(res)
     else:
-        print(res)
+        print(res.get("validation_status"))
 
 
 if __name__ == "__main__":
