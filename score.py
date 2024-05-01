@@ -52,9 +52,9 @@ def main():
         "score_errors": (
             ""
             if status == "SCORED"
-            else "Prediction file invalid; cannot be scored."
+            else "Submission could not be evaluated due to validation errors."
         ),
-        ** scores
+        **scores,
     }
     with open(args.output, "w", encoding="utf-8") as out:
         out.write(json.dumps(res))
