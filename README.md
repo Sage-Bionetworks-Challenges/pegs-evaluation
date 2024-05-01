@@ -50,7 +50,7 @@ docker run --rm \
   -v /PATH/TO/PREDICTIONS_FILE.CSV:/predictions.csv:ro \
   -v /PATH/TO/GOLDSTANDARD_FILE.CSV:/goldstandard.csv:ro \
   -v $PWD/output:/output:rw \
-  ghcr.io/sage-bionetworks-challenges/pegs-evaluation:v1.0.0 \
+  ghcr.io/sage-bionetworks-challenges/pegs-evaluation:latest \
   validate.py \
   -p /predictions.csv -g /goldstandard.csv -o /output/results.json
 ```
@@ -62,7 +62,7 @@ docker run --rm \
   -v /PATH/TO/PREDICTIONS_FILE.CSV:/predictions.csv:ro \
   -v /PATH/TO/GOLDSTANDARD_FILE.CSV:/goldstandard.csv:ro \
   -v $PWD/output:/output:rw \
-  ghcr.io/sage-bionetworks-challenges/pegs-evaluation:v1.0.0 \
+  ghcr.io/sage-bionetworks-challenges/pegs-evaluation:latest \
   validate.py \
   -p /predictions.csv -g /goldstandard.csv -o /output/results.json
 ```
