@@ -16,11 +16,8 @@ python validate.py \
   -p PATH/TO/PREDICTIONS_FILE.CSV \
   -g PATH/TO/GOLDSTANDARD_FILE.CSV [-o RESULTS_FILE]
 ```
-If `-o/--output` is not provided, then results will print to STDOUT, e.g.
 
-```json
-{"validation_status": "VALIDATED", "validation_errors": ""}
-```
+If `-o/--output` is not provided, then full results will output to `results.json`.
 
 What it will check for:
 
@@ -29,6 +26,8 @@ What it will check for:
 * `disease_probability` values are floats between 0.0 and 1.0, and cannot be null/None
 * there is one prediction per patient (so, no missing patient IDs or duplicate patient IDs)
 * there are no extra predictions (so, no unknown patient IDs)
+
+The script will either print to STDOUT, `VALIDATED` or `INVALID`.
 
 ### Score
 
