@@ -112,12 +112,16 @@ def main():
     """Main function."""
     args = get_args()
 
-    invalid_reasons = validate(
-        gold_file=args.goldstandard_file,
-        pred_file=args.predictions_file
-    )
+    if "INVALID" in args.predictions_file:
+        with open(args.predictions_file, encoding="utf-8") as f:
+            errors = [f.read()]
+    else:
+        errors = validate(
+            gold_file=args.goldstandard_file,
+            pred_file=args.predictions_file
+        )
 
-    invalid_reasons = "\n".join(filter(None, invalid_reasons))
+    invalid_reasons = "\n".join(filter(None, errors))
     status = "INVALID" if invalid_reasons else "VALIDATED"
 
     # truncate validation errors if >500 (character limit for sending email)
