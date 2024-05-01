@@ -40,12 +40,17 @@ def main():
     """Main function."""
     args = get_args()
 
-    pred = pd.read_csv(args.predictions_file)
-    gold = pd.read_csv(args.goldstandard_file)
-    scores = score(gold, "disease", pred, "disease_probability")
-
-    with open(args.output) as out:
+    with open(args.output, encoding="utf-8") as out:
         res = json.load(out)
+
+    if res.get("validation_status") == "VALIDATED":
+        pred = pd.read_csv(args.predictions_file)
+        gold = pd.read_csv(args.goldstandard_file)
+        scores = score(gold, "disease", pred, "disease_probability")
+        status = "SCORED"
+    else:
+        scores = {"auc_roc": None, "auprc": None}
+        status = "INVALID"
 
     res |= {
         "validation_status": "SCORED",
