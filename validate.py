@@ -130,7 +130,7 @@ def main():
 
     with open(args.output, "w") as out:
         out.write(res)
-    print(res.get("validation_status"))
+    print(status)
 
 
 if __name__ == "__main__":
