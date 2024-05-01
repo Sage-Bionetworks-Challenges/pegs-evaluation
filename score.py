@@ -59,6 +59,7 @@ def main():
     }
     with open(args.output, "w", encoding="utf-8") as out:
         out.write(json.dumps(res))
+    print(status)
 
 
 if __name__ == "__main__":
