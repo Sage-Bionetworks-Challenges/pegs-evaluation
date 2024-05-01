@@ -39,6 +39,8 @@ python score.py \
 
 If `-o/--output` is not provided, then results will output to `results.json`.
 
+The script will either print to STDOUT, `SCORED` or `INVALID`.
+
 ## 🐳 Using Docker 
 
 Results will be outputted to `output/results.json` in your current working directory (assuming you mount `$PWD/output`).
