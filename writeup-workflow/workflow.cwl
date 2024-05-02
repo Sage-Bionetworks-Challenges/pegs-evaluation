@@ -38,7 +38,7 @@ steps:
       - id: submissionid
         source: "#submissionId"
       - id: challengewiki
-        valueFrom: "syn123"  # TODO: update to the Challenge's synID
+        valueFrom: "syn52817032"
       - id: admin
         source: "#organizers"
     out:
