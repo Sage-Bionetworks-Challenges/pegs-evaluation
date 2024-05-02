@@ -1,5 +1,6 @@
 # PEGS Evaluation
 Validation and scoring scripts for Task 1 of the [PEGS Challenge](https://www.synapse.org/pegs).
+For Task 2, see `writeup-workflow/`.
 
 Metrics returned and used for ranking are:
 
