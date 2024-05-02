@@ -39,9 +39,6 @@ steps:
         source: "#submissionId"
       - id: challengewiki
         valueFrom: "syn123"  # TODO: update to the Challenge's synID
-    # UNCOMMENT THE FOLLOWING IF NEEDED
-    #   - id: public
-    #     default: true
       - id: admin
         source: "#organizers"
     out:
@@ -60,9 +57,6 @@ steps:
         source: "#validate/status"
       - id: invalid_reasons
         source: "#validate/invalid_reasons"
-      # UNCOMMENT IF EMAIL SHOULD ONLY BE SENT FOR ERRORS
-      # - id: errors_only
-      #   default: true
     out: [finished]
 
   annotate_validation_with_output:
