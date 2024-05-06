@@ -4,7 +4,7 @@ WORKDIR /usr/local/bin
 
 COPY requirements.txt .
 
-RUN apt-get update -y && apt-get upgrade -y && apt-get install -y \
+RUN apt-get upgrade -y && apt-get install -y \
     python3 \
     python3-pip
 
