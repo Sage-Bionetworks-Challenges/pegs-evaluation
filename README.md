@@ -15,7 +15,7 @@ Metrics returned and used for ranking are:
 ```text
 python validate.py \
   -p PATH/TO/PREDICTIONS_FILE.CSV \
-  -g PATH/TO/GOLDSTANDARD_FILE.CSV [-o RESULTS_FILE]
+  -g PATH/TO/GOLDSTANDARD_FOLDER [-o RESULTS_FILE]
 ```
 
 If `-o/--output` is not provided, then full results will output to `results.json`.
@@ -35,7 +35,7 @@ The script will either print to STDOUT, `VALIDATED` or `INVALID`.
 ```text
 python score.py \
   -p PATH/TO/PREDICTIONS_FILE.CSV \
-  -g PATH/TO/GOLDSTANDARD_FILE.CSV [-o RESULTS_FILE]
+  -g PATH/TO/GOLDSTANDARD_FOLDER [-o RESULTS_FILE]
 ```
 
 If `-o/--output` is not provided, then results will output to `results.json`.
@@ -51,11 +51,11 @@ Results will be outputted to `output/results.json` in your current working direc
 ```
 docker run --rm \
   -v /PATH/TO/PREDICTIONS_FILE.CSV:/predictions.csv:ro \
-  -v /PATH/TO/GOLDSTANDARD_FILE.CSV:/goldstandard.csv:ro \
+  -v /PATH/TO/GOLDSTANDARD_FOLDER:/goldstandard:ro \
   -v $PWD/output:/output:rw \
   ghcr.io/sage-bionetworks-challenges/pegs-evaluation:latest \
   validate.py \
-  -p /predictions.csv -g /goldstandard.csv -o /output/results.json
+  -p /predictions.csv -g /goldstandard -o /output/results.json
 ```
 
 ### Score
@@ -63,9 +63,9 @@ docker run --rm \
 ```
 docker run --rm \
   -v /PATH/TO/PREDICTIONS_FILE.CSV:/predictions.csv:ro \
-  -v /PATH/TO/GOLDSTANDARD_FILE.CSV:/goldstandard.csv:ro \
+  -v /PATH/TO/GOLDSTANDARD_FOLDER:/goldstandard:ro \
   -v $PWD/output:/output:rw \
   ghcr.io/sage-bionetworks-challenges/pegs-evaluation:latest \
   validate.py \
-  -p /predictions.csv -g /goldstandard.csv -o /output/results.json
+  -p /predictions.csv -g /goldstandard -o /output/results.json
 ```
