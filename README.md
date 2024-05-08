@@ -54,7 +54,7 @@ docker run --rm \
   -v /PATH/TO/GOLDSTANDARD_FOLDER:/goldstandard:ro \
   -v $PWD/output:/output:rw \
   ghcr.io/sage-bionetworks-challenges/pegs-evaluation:latest \
-  validate.py \
+  python3 validate.py \
   -p /predictions.csv -g /goldstandard -o /output/results.json
 ```
 
@@ -66,6 +66,6 @@ docker run --rm \
   -v /PATH/TO/GOLDSTANDARD_FOLDER:/goldstandard:ro \
   -v $PWD/output:/output:rw \
   ghcr.io/sage-bionetworks-challenges/pegs-evaluation:latest \
-  validate.py \
+  python3 score.py \
   -p /predictions.csv -g /goldstandard -o /output/results.json
 ```
