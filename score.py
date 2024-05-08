@@ -5,15 +5,18 @@ Metrics to return:
     - ROC curve
     - PR curve
 """
-
+from glob import glob
 import argparse
 import json
 import os
 
 import pandas as pd
+import numpy as np
 from sklearn.metrics import roc_auc_score, average_precision_score
 
-from glob import glob
+GOLDSTANDARD_COLS = {"id": str, "disease": int}
+PREDICTION_COLS = {"id": str, "disease_probability": np.float64}
+
 
 def get_args():
     """Set up command-line interface and get arguments."""
@@ -37,7 +40,10 @@ def extract_gs_file(folder):
     """Extract gold standard file from folder."""
     files = glob(os.path.join(folder, "*"))
     if len(files) != 1:
-        raise ValueError(f"Expected exactly one gold standard file in folder. Got {len(files)}. Exiting.")
+        raise ValueError(
+            "Expected exactly one gold standard file in folder. "
+            f"Got {len(files)}. Exiting."
+        )
 
     return files[0]
 
@@ -52,8 +58,16 @@ def main():
     gold_file = extract_gs_file(args.goldstandard_folder)
 
     if res.get("validation_status") == "VALIDATED":
-        pred = pd.read_csv(args.predictions_file)
-        gold = pd.read_csv(gold_file)
+        pred = pd.read_csv(
+            args.predictions_file,
+            usecols=GOLDSTANDARD_COLS,
+            dtype=GOLDSTANDARD_COLS
+        )
+        gold = pd.read_csv(
+            gold_file,
+            usecols=PREDICTION_COLS,
+            dtype=PREDICTION_COLS
+        )
         scores = score(gold, "disease", pred, "disease_probability")
         status = "SCORED"
     else:
