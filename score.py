@@ -57,30 +57,31 @@ def main():
 
     gold_file = extract_gs_file(args.goldstandard_folder)
 
+    scores = {"auc_roc": None, "auprc": None}
+    status = "INVALID"
     if res.get("validation_status") == "VALIDATED":
-        pred = pd.read_csv(
-            args.predictions_file,
-            usecols=PREDICTION_COLS,
-            dtype=PREDICTION_COLS
-        )
-        gold = pd.read_csv(
-            gold_file,
-            usecols=GOLDSTANDARD_COLS,
-            dtype=GOLDSTANDARD_COLS
-        )
-        scores = score(gold, "disease", pred, "disease_probability")
-        status = "SCORED"
+        try:
+            pred = pd.read_csv(
+                args.predictions_file,
+                usecols=PREDICTION_COLS,
+                dtype=PREDICTION_COLS
+            )
+            gold = pd.read_csv(
+                gold_file,
+                usecols=GOLDSTANDARD_COLS,
+                dtype=GOLDSTANDARD_COLS
+            )
+            scores = score(gold, "disease", pred, "disease_probability")
+            status = "SCORED"
+            errors = ""
+        except ValueError:
+            errors = "An error was encountered during scoring; submission not evaluated."
     else:
-        scores = {"auc_roc": None, "auprc": None}
-        status = "INVALID"
+        errors = "Submission could not be evaluated due to validation errors."
 
     res |= {
         "score_status": status,
-        "score_errors": (
-            ""
-            if status == "SCORED"
-            else "Submission could not be evaluated due to validation errors."
-        ),
+        "score_errors": errors,
         **scores,
     }
     with open(args.output, "w", encoding="utf-8") as out:
