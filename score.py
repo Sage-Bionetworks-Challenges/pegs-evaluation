@@ -60,13 +60,13 @@ def main():
     if res.get("validation_status") == "VALIDATED":
         pred = pd.read_csv(
             args.predictions_file,
-            usecols=GOLDSTANDARD_COLS,
-            dtype=GOLDSTANDARD_COLS
+            usecols=PREDICTION_COLS,
+            dtype=PREDICTION_COLS
         )
         gold = pd.read_csv(
             gold_file,
-            usecols=PREDICTION_COLS,
-            dtype=PREDICTION_COLS
+            usecols=GOLDSTANDARD_COLS,
+            dtype=GOLDSTANDARD_COLS
         )
         scores = score(gold, "disease", pred, "disease_probability")
         status = "SCORED"
