@@ -13,8 +13,8 @@ import os
 import numpy as np
 import pandas as pd
 
-GOLDSTANDARD_COLS = {"id": str, "disease": int}
-EXPECTED_COLS = {"id": str, "disease_probability": np.float64}
+GOLDSTANDARD_COLS = {"epr_number": str, "disease_probability": str}
+EXPECTED_COLS = {"epr_number": str, "disease_probability": np.float64}
 
 
 def get_args():
@@ -28,18 +28,18 @@ def get_args():
 
 def check_dups(pred):
     """Check for duplicate participant IDs."""
-    duplicates = pred.duplicated(subset=["id"])
+    duplicates = pred.duplicated(subset=["epr_number"])
     if duplicates.any():
         return (
             f"Found {duplicates.sum()} duplicate ID(s): "
-            f"{pred[duplicates].id.to_list()}"
+            f"{pred[duplicates].epr_number.to_list()}"
         )
     return ""
 
 
 def check_missing_ids(gold, pred):
     """Check for missing participant IDs."""
-    pred = pred.set_index("id")
+    pred = pred.set_index("epr_number")
     missing_ids = gold.index.difference(pred.index)
     if missing_ids.any():
         return (
@@ -51,7 +51,7 @@ def check_missing_ids(gold, pred):
 
 def check_unknown_ids(gold, pred):
     """Check for unknown participant IDs."""
-    pred = pred.set_index("id")
+    pred = pred.set_index("epr_number")
     unknown_ids = pred.index.difference(gold.index)
     if unknown_ids.any():
         return (
@@ -92,7 +92,7 @@ def validate(gold_folder, pred_file):
     """Validate predictions file against goldstandard."""
     errors = []
     gold_file = extract_gs_file(gold_folder)
-    gold = pd.read_csv(gold_file, dtype=GOLDSTANDARD_COLS, index_col="id")
+    gold = pd.read_csv(gold_file, dtype=GOLDSTANDARD_COLS, index_col="epr_number")
     try:
         pred = pd.read_csv(
             pred_file,

@@ -14,8 +14,8 @@ import pandas as pd
 import numpy as np
 from sklearn.metrics import roc_auc_score, average_precision_score
 
-GOLDSTANDARD_COLS = {"id": str, "disease": int}
-PREDICTION_COLS = {"id": str, "disease_probability": np.float64}
+GOLDSTANDARD_COLS = {"epr_number": str, "disease_probability": str}
+PREDICTION_COLS = {"epr_number": str, "disease_probability": np.float64}
 
 
 def get_args():
