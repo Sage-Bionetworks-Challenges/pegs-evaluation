@@ -5,17 +5,17 @@ Metrics to return:
     - ROC curve
     - PR curve
 """
-from glob import glob
 import argparse
 import json
 import os
+from glob import glob
 
-import pandas as pd
 import numpy as np
-from sklearn.metrics import roc_auc_score, average_precision_score
+import pandas as pd
+from sklearn.metrics import average_precision_score, roc_auc_score
 
-GOLDSTANDARD_COLS = {"id": str, "disease": int}
-PREDICTION_COLS = {"id": str, "disease_probability": np.float64}
+GOLDSTANDARD_COLS = {"epr_number": str, "disease_probability": str}
+PREDICTION_COLS = {"epr_number": str, "disease_probability": np.float64}
 
 
 def get_args():
@@ -27,12 +27,21 @@ def get_args():
     return parser.parse_args()
 
 
-def score(gold, gold_col, pred, pred_col):
+def score(gold, pred, id_colname, prob_colname):
     """
     Calculate metrics for: AUC-ROC, AUCPR
     """
-    roc = roc_auc_score(gold[gold_col], pred[pred_col])
-    pr = average_precision_score(gold[gold_col], pred[pred_col])
+    # Join the two dataframes so that the order of the ids are the same
+    # between goldstandard and prediction.
+    merged = gold.merge(pred, how="left", on=id_colname)
+    roc = roc_auc_score(
+        merged[prob_colname + "_x"],
+        merged[prob_colname + "_y"]
+    )
+    pr = average_precision_score(
+        merged[prob_colname + "_x"],
+        merged[prob_colname + "_y"]
+    )
     return {"auc_roc": roc, "auprc": pr}
 
 
@@ -44,8 +53,14 @@ def extract_gs_file(folder):
             "Expected exactly one gold standard file in folder. "
             f"Got {len(files)}. Exiting."
         )
-
     return files[0]
+
+
+def preprocess(df, colname):
+    """Preprocess dataframe and convert column as needed."""
+    df = df[~df[colname].isin([".M"])]
+    df[colname] = df[colname].astype(int)
+    return df
 
 
 def main():
@@ -71,7 +86,8 @@ def main():
                 usecols=GOLDSTANDARD_COLS,
                 dtype=GOLDSTANDARD_COLS
             )
-            scores = score(gold, "disease", pred, "disease_probability")
+            gold = preprocess(gold, "disease_probability")
+            scores = score(gold, pred, "epr_number", "disease_probability")
             status = "SCORED"
             errors = ""
         except ValueError:
