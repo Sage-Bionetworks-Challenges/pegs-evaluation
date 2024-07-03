@@ -57,6 +57,13 @@ def extract_gs_file(folder):
     return files[0]
 
 
+def preprocess(df, colname):
+    """Preprocess dataframe and convert column as needed."""
+    df = df[~df[colname].isin([".M"])]
+    df[colname] = df[colname].astype(int)
+    return df
+
+
 def main():
     """Main function."""
     args = get_args()
@@ -80,7 +87,8 @@ def main():
                 usecols=GOLDSTANDARD_COLS,
                 dtype=GOLDSTANDARD_COLS
             )
-            scores = score(gold, "disease", pred, "disease_probability")
+            gold = preprocess(gold, "disease_probability")
+            scores = score(gold, pred, "epr_number", "disease_probability")
             status = "SCORED"
             errors = ""
         except ValueError:
