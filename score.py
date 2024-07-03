@@ -27,12 +27,21 @@ def get_args():
     return parser.parse_args()
 
 
-def score(gold, gold_col, pred, pred_col):
+def score(gold, pred, id_colname, prob_colname):
     """
     Calculate metrics for: AUC-ROC, AUCPR
     """
-    roc = roc_auc_score(gold[gold_col], pred[pred_col])
-    pr = average_precision_score(gold[gold_col], pred[pred_col])
+    # Join the two dataframes so that the order of the ids are the same
+    # between goldstandard and prediction.
+    merged = gold.merge(pred, how="left", on=id_colname)
+    roc = roc_auc_score(
+        merged[prob_colname + "_x"],
+        merged[prob_colname + "_y"]
+    )
+    pr = average_precision_score(
+        merged[prob_colname + "_x"],
+        merged[prob_colname + "_y"]
+    )
     return {"auc_roc": roc, "auprc": pr}
 
 
