@@ -5,14 +5,14 @@ Metrics to return:
     - ROC curve
     - PR curve
 """
-from glob import glob
 import argparse
 import json
 import os
+from glob import glob
 
-import pandas as pd
 import numpy as np
-from sklearn.metrics import roc_auc_score, average_precision_score
+import pandas as pd
+from sklearn.metrics import average_precision_score, roc_auc_score
 
 GOLDSTANDARD_COLS = {"epr_number": str, "disease_probability": str}
 PREDICTION_COLS = {"epr_number": str, "disease_probability": np.float64}
@@ -53,7 +53,6 @@ def extract_gs_file(folder):
             "Expected exactly one gold standard file in folder. "
             f"Got {len(files)}. Exiting."
         )
-
     return files[0]
 
 
