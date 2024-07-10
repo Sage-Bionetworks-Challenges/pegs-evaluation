@@ -33,7 +33,7 @@ steps:
   validate:
     doc: >
       Check that submission is a Synapse project that is accessible to the
-      challenge organizers team
+      public
     run: steps/validate.cwl
     in:
       - id: synapse_config
@@ -42,6 +42,8 @@ steps:
         source: "#submissionId"
       - id: challengewiki
         valueFrom: "syn52817032"
+      - id: public
+        default: true
       - id: admin
         source: "#organizers"
     out:
